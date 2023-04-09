@@ -1,7 +1,10 @@
 import math
 import utils
+import keyGenerator
+import privateKeys
+import publicKeys
 
-
+keyGeneratorObj = []
 # this function pre-processes the received input, like removing extra chars, and adding extra spaces
 def preprocessReceivedInput():
     inputString = input()
@@ -45,14 +48,40 @@ def decode(encodedPlaintext):
         group = []
         for j in range(5):
             group.append(utils.intToChar(encodedGroupNum % 37))
-            encodedGroupNum = math.floor(encodedGroupNum / 37)
+            encodedGroupNum //= 37
         group.reverse()
         plaintext.extend(group)
     return ''.join(plaintext)
 
 
+# this function encrypts the encoded plaintext using RSA algorithm,
+# param: encodedPlaintext, list of group numbers
+def encrypt(encodedPlaintext):
+    e, n = publicKeys.getUserPublicKey(keyGeneratorObj, 2)  # TODO: change 2 to the friend user index
+    ciphertext = []
+    for i in range(len(encodedPlaintext)):
+        ciphertext.append(pow(encodedPlaintext[i], e, n))
+    return ciphertext
+
+
+# this function decrypts the ciphertext using RSA algorithm,
+# param: ciphertext, list of encrypted group numbers
+def decrypt(ciphertext):
+    d, n = privateKeys.getUserPrivateKey(keyGeneratorObj, 2)  # TODO: change 2 to the current user index
+    encodedPlaintext = []
+    for i in range(len(ciphertext)):
+        encodedPlaintext.append(pow(ciphertext[i], d, n))
+    return encodedPlaintext
+
+
 if __name__ == '__main__':
+    keyGeneratorObj = keyGenerator.KeyGenerator()
+    keyGeneratorObj.generateNKeys(2)
+    print(keyGeneratorObj.e, keyGeneratorObj.d, keyGeneratorObj.n)
     preprocessedInput = preprocessReceivedInput()
     encodedPlaintext = encode(preprocessedInput)
-    decodedPlaintext = decode(encodedPlaintext)
-    print(decodedPlaintext)
+
+    ciphertext = encrypt(encodedPlaintext)
+    decryptedCiphertext = decrypt(ciphertext)
+    decodedPlaintext = decode(decryptedCiphertext)
+    print("decodedPlaintext", decodedPlaintext)
