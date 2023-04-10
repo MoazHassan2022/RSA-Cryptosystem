@@ -4,7 +4,7 @@
 <ul>
   <li><a href="#built-with--">Built With</a></li>
   <li><a href="#getting-started">Getting Started</a></li>
-  <li><a href="#Running">Running</a></li>
+  <li><a href="#running-from-terminals">Running</a></li>
   <li><a href="#Description">Description</a></li>
   <li><a href="#Screenshots">Screenshots</a></li>
 </ul>
