@@ -11,19 +11,20 @@ import math
 # d1 = (1/e1) mod (phiN1) = 23
 
 class KeyGenerator:
-    def __init__(self):
+    def __init__(self, bitsNum):
         self.e = 0
         self.d = 0
         self.n = 0
+        self.bitsNum = bitsNum
 
     def generateRandomKey(self):
-        pGen = utils.getPrime(1024)
-        qGen = utils.getPrime(1024)
+        pGen = utils.getPrime(self.bitsNum)
+        qGen = utils.getPrime(self.bitsNum)
         nGen = pGen * qGen
         phiNGen = (pGen - 1) * (qGen - 1)
-        eGen = utils.getPrime(1024)
+        eGen = utils.getPrime(self.bitsNum)
         while math.gcd(eGen, phiNGen) != 1:
-            eGen = utils.getPrime(1024)
+            eGen = utils.getPrime(self.bitsNum)
         dGen, _, _ = utils.extendedEuclideanAlgorithm(eGen, phiNGen)  # multiplicative inverse modulo phi(n)
         dGen = dGen % phiNGen
         self.e = eGen

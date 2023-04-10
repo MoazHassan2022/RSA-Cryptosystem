@@ -1,6 +1,7 @@
 import random
 import sympy
 
+
 # this function converts a char to int according to our mapping:
 # 0 => 0, ..., 5 => 5, ..., 9 => 9
 # a => 10, b => 11, ..., z => 35
@@ -64,8 +65,9 @@ def getPrime(bitsNum):
     while not isPrime(p):
         p = random.getrandbits(bitsNum)
     return p'''
-    p = sympy.randprime(2**(bitsNum - 1), 2**bitsNum - 1)
+    p = sympy.randprime(2 ** (bitsNum - 1), 2 ** bitsNum - 1)
     return p
+
 
 # function to calculate pow(m, e) mod n using modular exponentiation algorithm
 def modExp(m, e, n):
@@ -85,3 +87,13 @@ def extendedEuclideanAlgorithm(a: int, b: int) -> tuple:
     else:
         x, y, gcd = extendedEuclideanAlgorithm(b, a % b)
         return (y, x - (a // b) * y, gcd)
+
+
+def factorize(n):
+    for i in range(2, int(n ** 0.5) + 1):
+        if n % i == 0:
+            factor1 = i
+            factor2 = n // i
+            if isPrime(factor1) and isPrime(factor2):
+                return factor1, factor2
+    return None
