@@ -12,18 +12,9 @@ import math
 
 class KeyGenerator:
     def __init__(self):
-        self.e = []
-        self.d = []
-        self.n = []
-
-    def getE(self, index):
-        return self.e[index]
-
-    def getD(self, index):
-        return self.d[index]
-
-    def getN(self, index):
-        return self.n[index]
+        self.e = 0
+        self.d = 0
+        self.n = 0
 
     def generateRandomKey(self):
         pGen = utils.getPrime(1024)
@@ -35,11 +26,6 @@ class KeyGenerator:
             eGen = utils.getPrime(1024)
         dGen, _, _ = utils.extendedEuclideanAlgorithm(eGen, phiNGen)  # multiplicative inverse modulo phi(n)
         dGen = dGen % phiNGen
-        return eGen, dGen, nGen
-
-    def generateNKeys(self, numOfKeys):
-        for i in range(numOfKeys):
-            eGen, dGen, nGen = self.generateRandomKey()
-            self.e.append(eGen)
-            self.d.append(dGen)
-            self.n.append(nGen)
+        self.e = eGen
+        self.d = dGen
+        self.n = nGen
